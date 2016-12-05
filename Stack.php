@@ -9,6 +9,9 @@
  *5.元素进栈 getPushStack() 
  *6.元素出栈 getPopStack() 
  *7.仅返回栈内所有元素 getAllElem()*8.返回栈内某个元素的个数 getCountForElem() 
+ *
+ *@since  2016-12-5
+ *@author  wmz
  */  
 header("content-type:text/html;charset=UTF-8");  
 class LNode{  
