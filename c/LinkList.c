@@ -66,6 +66,23 @@ Status ListTraverse(LinkList L)
     return OK;
 }
 
+
+/* 初始条件：顺序线性表L已存在 */
+/* 操作结果：依次对L的每个数据元素输出 */
+Status ListTraverseLimit(LinkList L, int n)
+{
+    int i = 0;
+    LinkList p=L->next;
+    while(p && i < n)
+    {
+        visit(p->data);
+        p=p->next;
+        i++;
+    }
+    printf("\n只显示 %d 个\n", n);
+    return OK;
+}
+
 /* 初始条件：顺序线性表L已存在,1≤i≤ListLength(L)， */
 
 /* 操作结果：在L中第i个位置之前插入新的数据元素e，L的长度加1 */
@@ -321,6 +338,76 @@ Status GetMidNode(LinkList L, ElemType *e) {
     *e = mid->data;
     return OK;
 }
+//判断单链表是否有环
+int HasLoop(LinkList L)
+{
+    int step1 = 1;
+    int step2 = 2;
+    LinkList p = L;
+    LinkList q = L;
+    //while (p != NULL && q != NULL && q->next == NULL)
+    while (p != NULL && q != NULL && q->next != NULL)
+    {
+        p = p->next;
+        if (q->next != NULL)
+            q = q->next->next;
+        printf("p:%d, q:%d \n", p->data, q->data);
+        if (p == q)
+            return 1;
+    }
+    return 0;
+}
+
+int HasLoop2(LinkList L)
+{
+    LinkList cur1 = L;  // 定义结点 cur1
+    int pos1 = 0;       // cur1 的步数
+    while(cur1){        // cur1 结点存在
+        LinkList cur2 = L;  // 定义结点 cur2
+        int pos2 = 0;       // cur2 的步数
+        pos1 ++;            // cur1 步数自增
+        while(cur2){        // cur2 结点不为空
+            pos2 ++;        // cur2 步数自增
+            if(cur2 == cur1){   // 当cur1与cur2到达相同结点时
+                if(pos1 == pos2)    // 走过的步数一样
+                    break;          // 说明没有还
+                else                // 否则
+                    return 1;       // 有环并返回1
+            }
+            cur2 = cur2->next;      //  如果没发现环，继续下一个结点
+        }
+        cur1 = cur1->next;  // cur1继续向后一个结点
+    }
+    return 0;
+}
+
+Status BulidListLoop(LinkList *L, int num)
+{
+    int i = 0;
+    LinkList cur = *L;
+    LinkList tail = NULL;
+
+    if(num <= 0 || L == NULL)
+    {
+        return ERROR;
+    }
+    for(i = 1; i < num; ++i)
+    {
+        if(cur == NULL)
+        {
+            return ERROR;
+        }
+        cur = cur->next;
+    }
+    tail = cur;
+    while(tail->next)
+    {
+        tail = tail->next;
+    }
+    tail->next = cur;
+    return OK;
+}
+
 
 int main()
 {
@@ -335,7 +422,8 @@ int main()
 
     printf("\n1.整表创建（头插法） \n2.整表创建（尾插法） \n3.遍历操作 \n4.插入操作");
     printf("\n5.删除操作 \n6.获取结点数据 \n7.查找某个数是否在链表中 \n8.置空链表");
-    printf("\n9.链表反转逆序 \n10.求链表倒数第N个数 \n11.找到链表的中间结点");
+    printf("\n9.链表反转逆序 \n10.求链表倒数第N个数 \n11.找到链表的中间结点 \n12.判断链表是否有环");
+    printf("\n13.链表建环 ");
     printf("\n0.退出 \n请选择你的操作：\n");
     while(opp != '0'){
         scanf("%d",&opp);
@@ -425,6 +513,37 @@ int main()
                 printf("链表中间结点的值为：%d\n", e);
                 printf("\n");
                 break;
+
+            case 12:
+                if( HasLoop(L) )
+                {
+                    printf("方法一: 链表有环\n");
+                }
+                else
+                {
+                    printf("方法一: 链表无环\n");
+                }
+
+                if( HasLoop2(L) )
+                {
+                    printf("方法二: 链表有环\n");
+                }
+                else
+                {
+                    printf("方法二: 链表无环\n");
+                }
+                printf("\n");
+                break;
+
+             case 13:
+
+                 printf("你要在哪个位置开始建环？");
+                 scanf("%d", &pos);
+                 BulidListLoop(&L, pos);
+                 ListTraverseLimit(L, 20);
+                 printf("\n");
+                 break;
+
 
             case 0:
                 exit(0);
