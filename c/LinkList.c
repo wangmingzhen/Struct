@@ -408,6 +408,28 @@ Status BulidListLoop(LinkList *L, int num)
     return OK;
 }
 
+LinkList RemoveDupNode(LinkList L)//删除重复结点的算法
+{
+    LinkList p,q,r;
+    p=L->next;
+    while(p)    // p用于遍历链表
+    {
+         q=p;
+         while(q->next) // q遍历p后面的结点，并与p数值比较
+         {
+             if(q->next->data==p->data)
+             {
+                 r=q->next; // r保存需要删掉的结点
+                 q->next=r->next;   // 需要删掉的结点的前后结点相接
+                 free(r);
+             }
+             else
+                 q=q->next;
+         }
+         p=p->next;
+    }
+    return L;
+}
 
 int main()
 {
@@ -424,6 +446,7 @@ int main()
     printf("\n5.删除操作 \n6.获取结点数据 \n7.查找某个数是否在链表中 \n8.置空链表");
     printf("\n9.链表反转逆序 \n10.求链表倒数第N个数 \n11.找到链表的中间结点 \n12.判断链表是否有环");
     printf("\n13.链表建环 ");
+    printf("\n14.链表去重 ");
     printf("\n0.退出 \n请选择你的操作：\n");
     while(opp != '0'){
         scanf("%d",&opp);
@@ -543,6 +566,12 @@ int main()
                  ListTraverseLimit(L, 20);
                  printf("\n");
                  break;
+
+             case 14:
+                RemoveDupNode(L);
+                ListTraverse(L);
+                printf("\n");
+                break;
 
 
             case 0:
