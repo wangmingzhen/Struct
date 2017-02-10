@@ -297,41 +297,69 @@ Status GetNthNodeFromBack(LinkList L, int n, ElemType *e)
     return OK;
 }
 
+
+
+// 找到链表的中间节点
+Status GetMidNode(LinkList L, ElemType *e) {
+    LinkList search, mid;
+    mid = search = L;
+    while (search->next != NULL)
+    {
+        //search移动的速度是 mid 的2倍
+        if (search->next->next != NULL)
+        {
+            search = search->next->next;
+            mid = mid->next;
+            //printf("search %d\n", search->data);
+            //printf("mid %d\n", mid->data);
+        }
+        else
+        {
+            search = search->next;
+        }
+    }
+    *e = mid->data;
+    return OK;
+}
+
 int main()
 {
     LinkList L;
     Status i;
     int j,k,pos,value;
-    char opp;
+    int opp;
     ElemType e;
 
     i=InitList(&L);
     printf("链表L初始化完毕，ListLength(L)=%d\n",ListLength(L));
 
-    printf("\n1.整表创建（头插法） \n2.整表创建（尾插法） \n3.遍历操作 \n4.插入操作 \n5.删除操作 \n6.获取结点数据 \n7.查找某个数是否在链表中 \n8.置空链表  \n9.链表反转逆序 \n10.求链表倒数第N个数 \n0.退出 \n请选择你的操作：\n");
+    printf("\n1.整表创建（头插法） \n2.整表创建（尾插法） \n3.遍历操作 \n4.插入操作");
+    printf("\n5.删除操作 \n6.获取结点数据 \n7.查找某个数是否在链表中 \n8.置空链表");
+    printf("\n9.链表反转逆序 \n10.求链表倒数第N个数 \n11.找到链表的中间结点");
+    printf("\n0.退出 \n请选择你的操作：\n");
     while(opp != '0'){
-        scanf("%c",&opp);
+        scanf("%d",&opp);
         switch(opp){
-            case '1':
+            case 1:
                 CreateListHead(&L,10);
                 printf("整体创建L的元素(头插法)：\n");
                 ListTraverse(L);
                 printf("\n");
                 break;
 
-            case '2':
+            case 2:
                 CreateListTail(&L,10);
                 printf("整体创建L的元素(尾插法)：\n");
                 ListTraverse(L);
                 printf("\n");
                 break;
 
-            case '3':
+            case 3:
                 ListTraverse(L);
                 printf("\n");
                 break;
 
-            case '4':
+            case 4:
                 printf("要在第几个位置插入元素？");
                 scanf("%d",&pos);
                 printf("插入的元素值是多少？");
@@ -341,7 +369,7 @@ int main()
                 printf("\n");
                 break;
 
-            case '5':
+            case 5:
                 printf("要删除第几个元素？");
                 scanf("%d",&pos);
                 ListDelete(&L,pos,&e);
@@ -350,7 +378,7 @@ int main()
                 printf("\n");
                 break;
 
-            case '6':
+            case 6:
                 printf("你需要获取第几个元素？");
                 scanf("%d",&pos);
                 GetElem(L,pos,&e);
@@ -358,7 +386,7 @@ int main()
                 printf("\n");
                 break;
 
-            case '7':
+            case 7:
                 printf("输入你需要查找的数：");
                 scanf("%d",&pos);
                 k=LocateElem(L,pos);
@@ -369,31 +397,36 @@ int main()
                 printf("\n");
                 break;
 
-            case '8':
+            case 8:
                 i=ClearList(&L);
                 printf("\n清空L后：ListLength(L)=%d\n",ListLength(L));
                 ListTraverse(L);
                 printf("\n");
                 break;
 
-            case '9':
-                //ListReverse(L);
-                //printf("\n反转L后\n");
-                //ListReverse2(L);
-                L=ListReverse3(L);
-                printf("\n");
+            case 9:
+                ListReverse2(L);
+                //L=ListReverse3(L);
+                printf("\n反转L后\n");
                 ListTraverse(L);
+                printf("\n");
                 break;
 
-           case 10:
-                 printf("你要查找倒数第几个结点的值？");
-                 scanf("%d", &value);
-                 GetNthNodeFromBack(L,value,&e);
-                 printf("倒数第%d个元素的值为：%d\n", value, e);
-                 printf("\n");
-                 break;
+            case 10:
+                printf("你要查找倒数第几个结点的值？");
+                scanf("%d", &value);
+                GetNthNodeFromBack(L,value,&e);
+                printf("倒数第%d个元素的值为：%d\n", value, e);
+                printf("\n");
+                break;
 
-            case '0':
+            case 11:
+                GetMidNode(L, &e);
+                printf("链表中间结点的值为：%d\n", e);
+                printf("\n");
+                break;
+
+            case 0:
                 exit(0);
         }
     }
