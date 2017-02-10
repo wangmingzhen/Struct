@@ -266,6 +266,36 @@ LinkList ListReverse3(LinkList L)
     return newList;
 }
 
+// 获取单链表倒数第N个结点值
+Status GetNthNodeFromBack(LinkList L, int n, ElemType *e)
+{
+    int i = 0;
+    LinkList firstNode = L;
+    while (i < n && firstNode->next != NULL)
+    {
+        //正数N个节点，firstNode指向正的第N个节点
+        i++;
+        firstNode = firstNode->next;
+        printf("%d\n", i);
+    }
+    if (firstNode->next == NULL && i < n - 1)
+    {
+        //当节点数量少于N个时，返回NULL
+        printf("超出链表长度\n");
+        return ERROR;
+    }
+    LinkList secNode = L;
+    while (firstNode != NULL)
+    {
+        //查找倒数第N个元素
+        secNode = secNode->next;
+        firstNode = firstNode->next;
+        //printf("secNode:%d\n", secNode->data);
+        //printf("firstNode:%d\n", firstNode->data);
+    }
+    *e = secNode->data;
+    return OK;
+}
 
 int main()
 {
@@ -278,7 +308,7 @@ int main()
     i=InitList(&L);
     printf("链表L初始化完毕，ListLength(L)=%d\n",ListLength(L));
 
-    printf("\n1.整表创建（头插法） \n2.整表创建（尾插法） \n3.遍历操作 \n4.插入操作 \n5.删除操作 \n6.获取结点数据 \n7.查找某个数是否在链表中 \n8.置空链表  \n9.链表反转逆序\n0.退出 \n请选择你的操作：\n");
+    printf("\n1.整表创建（头插法） \n2.整表创建（尾插法） \n3.遍历操作 \n4.插入操作 \n5.删除操作 \n6.获取结点数据 \n7.查找某个数是否在链表中 \n8.置空链表  \n9.链表反转逆序 \n10.求链表倒数第N个数 \n0.退出 \n请选择你的操作：\n");
     while(opp != '0'){
         scanf("%c",&opp);
         switch(opp){
@@ -354,6 +384,14 @@ int main()
                 printf("\n");
                 ListTraverse(L);
                 break;
+
+           case 10:
+                 printf("你要查找倒数第几个结点的值？");
+                 scanf("%d", &value);
+                 GetNthNodeFromBack(L,value,&e);
+                 printf("倒数第%d个元素的值为：%d\n", value, e);
+                 printf("\n");
+                 break;
 
             case '0':
                 exit(0);
